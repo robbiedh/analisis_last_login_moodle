@@ -1,0 +1,126 @@
+<html>
+    <head>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            
+    </head>
+    <body>
+        <head>
+            
+        </head>
+    </body>
+    <div style="width:75%;">
+            <canvas style="width:75%;"  id="myChart"></canvas>
+    </div>
+   
+    <script>
+        const url =""; 
+        var users={};
+        var jan=0;
+        var feb=0;
+        var mart=0;
+        var apr =0;
+        var mei =0;
+        var jun =0;
+        var jul =0;
+        var aug =0;
+        var sep =0;
+        var okt =0;
+        var nov =0;
+        var des =0;
+        
+        
+        window.onload = function () { 
+            get_users();
+            
+            }
+function get_users(){
+    var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      users = JSON.parse(this.responseText);
+      proses_data();
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+  
+}
+function proses_data(){
+    yrs=getUrlParameter('tahun');
+    if(yrs==null)
+        yrs=2019;
+    var ts = Math.round((new Date()).getTime() / 1000);
+    console.log("Tes time "+ts);
+    if(users.users.length>0){
+        users.users.map((data,i)=>{
+            let date = new Date(data.lastaccess*1000);
+            console.log(date.getMonth());
+            console.log(date.getFullYear());
+            
+            if(date.getMonth()==0 && date.getFullYear()==yrs){
+                jan++;
+            } 
+            if(date.getMonth()==1  && date.getFullYear()==yrs){
+                feb++;
+            }if(date.getMonth()==2  && date.getFullYear()==yrs){
+                mart++;
+            } if(date.getMonth()==3  && date.getFullYear()==yrs){
+                apr++;
+            } if(date.getMonth()==4  && date.getFullYear()==yrs){
+                mei++;
+            } if(date.getMonth()==5  && date.getFullYear()==yrs){
+                jun++;
+            } if(date.getMonth()==6  && date.getFullYear()==yrs){
+                jun++;
+            } if(date.getMonth()==7  && date.getFullYear()==yrs){
+                aug++;
+            } if(date.getMonth()==8  && date.getFullYear()==yrs){
+                sep++;
+            }
+            if(date.getMonth()==9  &&   date.getFullYear()==yrs){
+                okt++;
+            } if(date.getMonth()==10  && date.getFullYear()==yrs){
+                nov++;
+            } if(date.getMonth()==11  && date.getFullYear()==yrs){
+                des++;
+            }
+        })
+        console.log({jan,feb,mart,apr,mei,jun,jul,aug,sep,okt,nov,des})
+        proses_grafik();
+
+    }
+   
+
+}
+function proses_grafik(){
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','Augut', 'Sep','Okt','Nov', 'Des'],
+        datasets: [{
+            label: 'User Login',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [jan, feb, mart, apr, mei, jun, jul,aug,sep,okt,nov,des]
+        }]
+    },
+
+    // Configuration options go here
+    options: {}
+});
+}
+
+function getUrlParameter(sParam) {
+	let searchParams = new URLSearchParams(window.location.search);
+	let param = searchParams.get(sParam);
+	return param;
+}
+    </script>
+    <script>
+ 
+        </script>
+</html>
